@@ -5,21 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type= "text/css" href="Styles/style.css">
-
-
+   
+    
 
     <title>BDD</title>
 </head>
 
 <body>
-<h1>CRUD</h1>
+<h1>MES BOOKMARKS</h1>
 
 <table>
 <tr>
+    <th>CategorieID</th>
+    <th>Catégorie</th>
+    <th>NomID</th>
     <th>Nom</th>
     <th>Lien</th>
     <th>Description</th>
 </tr>
+
+
+<form action="create.php" method="post">
+    <input type="submit" value="Ajouter" name="submit">
+</form>
 
 
 <?php
@@ -27,7 +35,7 @@
 try {
     // On se connecte à MySQL
     $connexion = new PDO('mysql:host=localhost;dbname=brief5;charset=utf8', 'root', '');
-    echo("Connexion établie !");
+    echo("");
 } catch (Exception $e) {
     // En cas d'erreur, on affiche un message et on arrête tout
     die('Erreur : ' . $e->getMessage());
@@ -36,20 +44,29 @@ try {
 // Si tout va bien, on peut continuer
 
 // On récupère tout le contenu de la table 
-$requete = 'SELECT * FROM lien ';
+$requete = 'SELECT categorie.*, lien.* FROM categorie_lien 
+JOIN categorie ON categorie_lien.categorie_id = categorie.categorie_id
+JOIN lien ON categorie_lien.lien_id = lien.lien_id';
+
+
+
 $requetePreparee = $connexion->prepare($requete);
 $requetePreparee->execute();
 $resultats = $requetePreparee->fetchAll();
 
+
 foreach ($resultats as $ligne) {
     echo "<tr>";
+        echo "<td>".$ligne ['categorie_id']."</td>";
+        echo "<td>".$ligne ['categorie_nom']."</td>";
+        echo "<td>".$ligne ['lien_id']."</td>";
         echo "<td>".$ligne ['lien_nom']."</td>";
         echo "<td>".$ligne ['lien_url']. "</td>";
         echo "<td>".$ligne ['lien_description']. "</td>";
-    echo "<tr>";
+    echo "</tr>";
 }
-?>
 
+?>
 
 </table>
 </body>

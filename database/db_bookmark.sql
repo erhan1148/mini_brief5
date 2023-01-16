@@ -17,7 +17,7 @@ CREATE TABLE `lien` (
     `lien_id` int (11) PRIMARY KEY NOT NULL,
     `lien_nom` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
     `lien_url` varchar(5000) CHARACTER SET utf8 DEFAULT NULL,
-    `lien_description` varchar(5000) CHARACTER SET utf8 DEFAULT NULL
+    `lien_description` varchar(5000) CHARACTER SET utf8 DEFAULT NULL,
   
 );
 
@@ -35,6 +35,8 @@ INSERT INTO `lien` (`lien_id`, `lien_nom`,`lien_url`, `lien_description`) VALUES
 
 
 
+
+
 CREATE TABLE categorie_lien (
     categorie_id INTEGER,
     lien_id INTEGER,
@@ -43,3 +45,17 @@ CREATE TABLE categorie_lien (
     FOREIGN KEY (lien_id) REFERENCES lien(lien_id)
 );
 
+
+ INSERT INTO `categorie_lien` (`categorie_id`, `lien_id`)
+ VALUES 
+ (1,3), 
+ (1,5),
+ (2,1),
+ (3,6),
+ (3,7),
+ (3,8),
+ (4,2),
+ (4,9),
+ (5,10),
+ (6,4)
+ 
