@@ -1,8 +1,8 @@
 CREATE DATABASE brief5
 
 CREATE TABLE `categorie` (
-    `categorie_id` int (11) PRIMARY KEY NOT NULL,
-    `categorie_nom` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+    `categorie_id` int (100) PRIMARY KEY NOT NULL order by ,
+    `categorie_nom` varchar(255) CHARACTER SET utf8 DEFAULT NULL
 )
 
 INSERT INTO `categorie` (`categorie_id`, `categorie_nom`) VALUES
@@ -14,12 +14,13 @@ INSERT INTO `categorie` (`categorie_id`, `categorie_nom`) VALUES
 (6, 'VEILLES');
 
 CREATE TABLE `lien` (
-    `lien_id` int (11) PRIMARY KEY NOT NULL,
+    `lien_id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `lien_nom` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
     `lien_url` varchar(5000) CHARACTER SET utf8 DEFAULT NULL,
-    `lien_description` varchar(5000) CHARACTER SET utf8 DEFAULT NULL,
+    `lien_description` varchar(5000) CHARACTER SET utf8 DEFAULT NULL
   
 );
+
 
 INSERT INTO `lien` (`lien_id`, `lien_nom`,`lien_url`, `lien_description`) VALUES
 (1, 'FIGMA', 'https://figma.com/', 'Outil de prototypage'),
@@ -38,8 +39,8 @@ INSERT INTO `lien` (`lien_id`, `lien_nom`,`lien_url`, `lien_description`) VALUES
 
 
 CREATE TABLE categorie_lien (
-    categorie_id INTEGER,
-    lien_id INTEGER,
+    categorie_id INTEGER AUTO_INCREMENT,
+    lien_id INTEGER AUTO_INCREMENT  ,
     PRIMARY KEY (categorie_id, lien_id),
     FOREIGN KEY (categorie_id) REFERENCES categorie(categorie_id),
     FOREIGN KEY (lien_id) REFERENCES lien(lien_id)

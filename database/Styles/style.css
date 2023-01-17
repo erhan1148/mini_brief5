@@ -4,10 +4,32 @@ table{
     text-align: center;
 }
 th{
-    border: 1px solid red;
+    border: 1px solid rebeccapurple;
     background-color: gray;
     font-size: 25px;
 }
 td{
-    border: 1px solid red;
+    border: 1px solid rebeccapurple;
+}
+
+h1{
+    text-align: center;
+    color: blue;
+    font-family: cursive;
+    font-size: 25px;
+}
+
+input{
+    background-color: blue;
+    font-size: 25px;
+    margin: auto;
+    border-color: black;
+    color: white;
+}
+.cat1{
+    background-color: blue;
+    font-size: 25px;
+    margin: auto;
+    border-color: black;
+    color: white;
 }

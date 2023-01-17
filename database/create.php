@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type= "text/css" href="Styles/style.css">
-   
-    
-
+</head>
 <body>
 <form method="POST" action="create.php">
     <label for="categorie_id">ID de la catégorie :</label>
@@ -35,29 +33,27 @@
     <input type="submit" value="Revenir à la BDD" name="submit">
 </form>
 
+<?php
+// Connexion à la base de données
+try {
+    $connexion = new PDO('mysql:host=localhost;dbname=brief5;charset=utf8', 'root', '');
+    echo("Connexion établie !");
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
 
-    <?php
+// Vérifiez si les données du formulaire ont été soumises
+if (isset($_POST['submit'])) {
 
-    // Connexion à la base de données
-    try {
-        $connexion = new PDO('mysql:host=localhost;dbname=brief5;charset=utf8', 'root', '');
-        echo("Connexion établie !");
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
+    // Récupérez les données du formulaire
+    $categorie_id = $_POST['categorie_id'];
+    $categorie_nom = $_POST['categorie_nom'];
+    $lien_id = $_POST['lien_id'];
+    $lien_nom = $_POST['lien_nom'];
+    $lien_url = $_POST['lien_url'];
+    $lien_description = $_POST['lien_description'];
 
-    // Vérifiez si les données du formulaire ont été soumises
-    if (isset($_POST['submit'])) {
-
-        // Récupérez les données du formulaire
-        $categorie_id = $_POST['categorie_id'];
-        $categorie_nom = $_POST['categorie_nom'];
-        $lien_id = $_POST['lien_id'];
-        $lien_nom = $_POST['lien_nom'];
-        $lien_url = $_POST['lien_url'];
-        $lien_description = $_POST['lien_description'];
-
-    // Vérifiez si les champs "categorie_id" et "categorie_nom" sont remplis avant de les insérer dans la table "categorie"
+    // Vérifiez si les champs "categorie_id" et "categorie_nom" sont remplis avant de les insérer dans la table "categorie
     if(!empty($categorie_id) && !empty($categorie_nom)) {
         // Préparez la requête d'insertion pour la table "categorie"
         $requeteCategorie = "INSERT INTO categorie (categorie_id, categorie_nom) VALUES (:categorie_id, :categorie_nom)";
@@ -65,39 +61,44 @@
         $requetePrepareeCategorie->bindValue(':categorie_id', $categorie_id);
         $requetePrepareeCategorie->bindValue(':categorie_nom', $categorie_nom);
         $requetePrepareeCategorie->execute();
-        $lastInsertId = $connexion->lastInsertId();
-        if ($lastInsertId == $categorie_id) {
-        }
-        else {
-        }
-        
+        // Récupération de lastInsertId pour la table "categorie"
+        $lastInsertIdCategorie = $connexion->lastInsertId();
     }
 
-            // Vérifiez si les champs "lien_nom", "lien_url" et "lien_description" sont remplis avant de les insérer dans la table "lien"
-            if(!empty($lien_nom) && !empty($lien_url) && !empty($lien_description)) {
-            // Préparez la requête d'insertion pour la table "lien"
-            $requeteLien = "INSERT INTO lien (lien_id,lien_nom, lien_url, lien_description) VALUES (:lien_id,:lien_nom, :lien_url, :lien_description)";
-            $requetePrepareeLien = $connexion->prepare($requeteLien);
-            // Liez les données du formulaire aux paramètres de la requête
-            $requetePrepareeLien->bindValue(':lien_id', $lien_id);
-            $requetePrepareeLien->bindValue(':lien_nom', $lien_nom);
-            $requetePrepareeLien->bindValue(':lien_url', $lien_url);
-            $requetePrepareeLien->bindValue(':lien_description', $lien_description);
-            $requetePrepareeLien->execute();
-            }
+    // Vérifiez si les champs "lien_nom", "lien_url" et "lien_description" sont remplis avant de les insérer dans la table "lien"
+    if(!empty($lien_nom) && !empty($lien_url) && !empty($lien_description)) {
+        // Préparez la requête d'insertion pour la table "lien"
+        $requeteLien = "INSERT INTO lien (lien_id,lien_nom, lien_url, lien_description) VALUES (:lien_id, :lien_nom, :lien_url, :lien_description)";
+        $requetePrepareeLien = $connexion->prepare($requeteLien);
+        $requetePrepareeLien->bindValue(':lien_id', $lien_id);
+        $requetePrepareeLien->bindValue(':lien_nom', $lien_nom);
+        $requetePrepareeLien->bindValue(':lien_url', $lien_url);
+        $requetePrepareeLien->bindValue(':lien_description', $lien_description);
+        $requetePrepareeLien->execute();
+        // Récupération de lastInsertId pour la table "lien"
+        $lastInsertIdLien = $connexion->lastInsertId();
+    }
 
-            //préparer la requête d'insertion pour la table de liaison categorie_lien
-            if(isset($lastInsertId)) {
-                $requeteLienCategorie = "INSERT INTO categorie_lien (categorie_id,lien_id) VALUES (:categorie_id,:lien_id)";
-                $requetePrepareeLienCategorie = $connexion->prepare($requeteLienCategorie);
-                $requetePrepareeLienCategorie->bindValue(':categorie_id', $lastInsertId);
-                $requetePrepareeLienCategorie->bindValue(':lien_id', $lien_id);
-            }
-            // Redirigez vers la page de visualisation des liens
-            header('Location: create.php');
-            exit;
+    // Vérifiez si les champs "lastInsertIdCategorie" et "lastInsertIdLien" sont remplis avant de les insérer dans la table "categorie_lien"
+    if(!empty($lastInsertIdCategorie) && !empty($lastInsertIdLien)) {
+        // Préparez la requête d'insertion pour la table "categorie_lien"
+        $requeteCategorieLien = "INSERT INTO categorie_lien (categorie_id, lien_id) VALUES (:categorie_id, :lien_id)";
+        $requetePrepareeCategorieLien = $connexion->prepare($requeteCategorieLien);
+        $requetePrepareeCategorieLien->bindValue(':categorie_id', $lastInsertIdCategorie);
+        $requetePrepareeCategorieLien->bindValue(':lien_id', $lastInsertIdLien);
+        $requetePrepareeCategorieLien->execute();
+    }
 
-        }
+    
+
+        header('Location: create.php');
+     exit;
+
+
+    }
+    
+        
+     
 
 ?>
 
