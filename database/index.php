@@ -29,7 +29,7 @@
     <input type="submit" value="Ajouter" name="submit" class="cat1">
 </form>
 <form action="update.php" method="post">
-    <input type="submit" value="Modifier" name="submit" class="cat2">
+    <input type="submit" value="Modifier"  name="submit" class="cat2">
 </form>
 <form action="delete.php" method="post">
     <input type="submit" value="Supprimer" name="submit" id="cat3">

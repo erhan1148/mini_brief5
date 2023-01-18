@@ -10,13 +10,12 @@
 
 
 <form method="POST" action="delete.php">
-    <label for="categorie_id">ID de la catégorie :</label>
-    <input type="text" name="categorie_id" id="categorie_id">
+  
 
     <label for="lien_id">ID du lien :</label>
     <input type="text" name="lien_id" id="lien_id">
 
-    <input type="submit" name="submit" value="SUPPRIMER">
+    <input type="submit" name="delete" value="SUPPRIMER">
 
 </form>
 
@@ -35,24 +34,20 @@ try {
 }
 
 
-
-
 if(isset($_POST['delete'])) {
     // Récupérez les données du formulaire
-    $categorie_id = $_POST['categorie_id'];
     $lien_id = $_POST['lien_id'];
 
-    // Préparez la requête de suppression pour la table "categorie_lien"
-    $requeteDelete = "DELETE FROM categorie_lien WHERE categorie_id = :categorie_id AND lien_id = :lien_id";
+    // Préparez la requête de suppression pour la table "lien"
+    $requeteDelete = "DELETE FROM lien WHERE lien_id = :lien_id";
     $requetePrepareeDelete = $connexion->prepare($requeteDelete);
-    $requetePrepareeDelete->bindValue(':categorie_id', $categorie_id);
     $requetePrepareeDelete->bindValue(':lien_id', $lien_id);
     $requetePrepareeDelete->execute();
 }
 
 
-
 ?>
+
 
 
 </body>

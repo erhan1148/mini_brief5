@@ -25,11 +25,8 @@ input{
     margin: auto;
     border-color: black;
     color: white;
-}
-.cat1{
-    background-color: blue;
-    font-size: 25px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     margin: auto;
-    border-color: black;
-    color: white;
 }

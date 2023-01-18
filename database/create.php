@@ -7,14 +7,13 @@
     <link rel="stylesheet" type= "text/css" href="Styles/style.css">
 </head>
 <body>
-<form method="POST" action="create.php">
-    <label for="categorie_id">ID de la catégorie :</label>
-    <input type="text" name="categorie_id" id="categorie_id">
+<form method="post" action="create.php">
+
+  
     <label for="categorie_nom">Nom de la catégorie :</label>
     <input type="text" name="categorie_nom" id="categorie_nom">
 
-    <label for="lien_id">ID du lien :</label>
-    <input type="text" name="lien_id" id="lien_id">
+    
 
     <label for="lien_nom">Nom du lien :</label>
     <input type="text" name="lien_nom" id="lien_nom">
@@ -25,7 +24,7 @@
     <label for="lien_description">Description du lien :</label>
     <textarea name="lien_description" id="lien_description"></textarea>
 
-    <input type="submit" name="submit" value="AJOUTER">
+    <input type="submit" name="create"  value="AJOUTER">
 
 </form>
 
@@ -43,65 +42,82 @@ try {
 }
 
 // Vérifiez si les données du formulaire ont été soumises
-if (isset($_POST['submit'])) {
+if (isset($_POST['create'])) {
 
     // Récupérez les données du formulaire
-    $categorie_id = $_POST['categorie_id'];
     $categorie_nom = $_POST['categorie_nom'];
-    $lien_id = $_POST['lien_id'];
     $lien_nom = $_POST['lien_nom'];
     $lien_url = $_POST['lien_url'];
     $lien_description = $_POST['lien_description'];
 
-    // Vérifiez si les champs "categorie_id" et "categorie_nom" sont remplis avant de les insérer dans la table "categorie
-    if(!empty($categorie_id) && !empty($categorie_nom)) {
+
+    // Vérifiez si les champs "categorie_nom" est rempli avant de les insérer dans la table "categorie
+    if(!empty($categorie_nom)) {
+    
+        // Vérifiez si la catégorie existe déjà
+        $requeteCategorieExistante = "SELECT * FROM categorie WHERE categorie_nom = :categorie_nom";
+        $requetePrepareeCategorieExistante = $connexion->prepare($requeteCategorieExistante);
+        $requetePrepareeCategorieExistante->bindValue(':categorie_nom', $categorie_nom);
+        $requetePrepareeCategorieExistante->execute();
+        $categorieExistante = $requetePrepareeCategorieExistante->fetch();
+        
+        if(!$categorieExistante){
+            // Préparez la requête d'insertion pour la table "categorie
         // Préparez la requête d'insertion pour la table "categorie"
-        $requeteCategorie = "INSERT INTO categorie (categorie_id, categorie_nom) VALUES (:categorie_id, :categorie_nom)";
+        $requeteCategorie = "INSERT INTO categorie (categorie_nom) VALUES (:categorie_nom)";
         $requetePrepareeCategorie = $connexion->prepare($requeteCategorie);
-        $requetePrepareeCategorie->bindValue(':categorie_id', $categorie_id);
         $requetePrepareeCategorie->bindValue(':categorie_nom', $categorie_nom);
         $requetePrepareeCategorie->execute();
-        // Récupération de lastInsertId pour la table "categorie"
-        $lastInsertIdCategorie = $connexion->lastInsertId();
-    }
-
-    // Vérifiez si les champs "lien_nom", "lien_url" et "lien_description" sont remplis avant de les insérer dans la table "lien"
-    if(!empty($lien_nom) && !empty($lien_url) && !empty($lien_description)) {
-        // Préparez la requête d'insertion pour la table "lien"
-        $requeteLien = "INSERT INTO lien (lien_id,lien_nom, lien_url, lien_description) VALUES (:lien_id, :lien_nom, :lien_url, :lien_description)";
-        $requetePrepareeLien = $connexion->prepare($requeteLien);
-        $requetePrepareeLien->bindValue(':lien_id', $lien_id);
-        $requetePrepareeLien->bindValue(':lien_nom', $lien_nom);
-        $requetePrepareeLien->bindValue(':lien_url', $lien_url);
-        $requetePrepareeLien->bindValue(':lien_description', $lien_description);
-        $requetePrepareeLien->execute();
-        // Récupération de lastInsertId pour la table "lien"
-        $lastInsertIdLien = $connexion->lastInsertId();
-    }
-
-    // Vérifiez si les champs "lastInsertIdCategorie" et "lastInsertIdLien" sont remplis avant de les insérer dans la table "categorie_lien"
-    if(!empty($lastInsertIdCategorie) && !empty($lastInsertIdLien)) {
-        // Préparez la requête d'insertion pour la table "categorie_lien"
-        $requeteCategorieLien = "INSERT INTO categorie_lien (categorie_id, lien_id) VALUES (:categorie_id, :lien_id)";
-        $requetePrepareeCategorieLien = $connexion->prepare($requeteCategorieLien);
-        $requetePrepareeCategorieLien->bindValue(':categorie_id', $lastInsertIdCategorie);
-        $requetePrepareeCategorieLien->bindValue(':lien_id', $lastInsertIdLien);
-        $requetePrepareeCategorieLien->execute();
-    }
-
+        // Récupération de l'id de la catégorie
+        $categorie_id = $connexion->lastInsertId();
+        }else{
+        $categorie_id = $categorieExistante['categorie_id'];
+        }
+        }// Vérifiez si les champs "lien_nom", "lien_url" et "lien_description" sont remplis avant de les insérer dans la table "lien"
+        if(!empty($lien_nom) && !empty($lien_url) && !empty($lien_description)) {
     
-
-        header('Location: create.php');
-     exit;
-
-
-    }
+    // Vérifiez si le lien existe déjà
+    $requeteLienExistant = "SELECT * FROM lien WHERE lien_nom = :lien_nom AND lien_url = :lien_url AND lien_description = :lien_description";
+    $requetePrepareeLienExistant = $connexion->prepare($requeteLienExistant);
+    $requetePrepareeLienExistant->bindValue(':lien_nom', $lien_nom);
+    $requetePrepareeLienExistant->bindValue(':lien_url', $lien_url);
+    $requetePrepareeLienExistant->bindValue(':lien_description', $lien_description);
+    $requetePrepareeLienExistant->execute();
+    $lienExistant = $requetePrepareeLienExistant->fetch();
     
-        
-     
+    if(!$lienExistant){
+    // Préparez la requête d'insertion pour la table "lien"
+    $requeteLien = "INSERT INTO lien (lien_nom, lien_url, lien_description) VALUES (:lien_nom, :lien_url, :lien_description)";
+    $requetePrepareeLien = $connexion->prepare($requeteLien);
+    $requetePrepareeLien->bindValue(':lien_nom', $lien_nom);
+    $requetePrepareeLien->bindValue(':lien_url', $lien_url);
+    $requetePrepareeLien->bindValue(':lien_description', $lien_description);
+    $requetePrepareeLien->execute();
+    // Récupération de l'id du lien
+    $lien_id = $connexion->lastInsertId();
+    }else{
+        $lien_id = $lienExistant['lien_id'];
+    }
+}
+
+// Vérifiez si les champs "categorie_id" et "lien_id" sont remplis avant de les insérer dans la table "categorie_lien"
+if(!empty($categorie_id) && !empty($lien_id)) {
+    // Préparez la requête d'insertion pour la table "categorie_lien"
+    $requeteCategorieLien = "INSERT INTO categorie_lien (categorie_id, lien_id) VALUES (:categorie_id, :lien_id)";
+    $requetePrepareeCategorieLien = $connexion->prepare($requeteCategorieLien);
+    $requetePrepareeCategorieLien->bindValue(':categorie_id', $categorie_id);
+    $requetePrepareeCategorieLien->bindValue(':lien_id', $lien_id);
+    $requetePrepareeCategorieLien->execute();
+    }}
+    
 
 ?>
 
+
+
+
+</body>
+</html>
 
 
 </body>
