@@ -10,26 +10,25 @@
 <form method="post" action="create.php">
 
   
-    <label for="categorie_nom">Nom de la catégorie :</label>
+    <label for="categorie_nom">Nom de la catégorie :</label><br>
     <input type="text" name="categorie_nom" id="categorie_nom">
 
-    
 
-    <label for="lien_nom">Nom du lien :</label>
+    <label for="lien_nom">Nom du lien :</label><br>
     <input type="text" name="lien_nom" id="lien_nom">
 
-    <label for="lien_url">URL du lien :</label>
+    <label for="lien_url">URL du lien :</label><br>
     <input type="text" name="lien_url" id="lien_url">
 
-    <label for="lien_description">Description du lien :</label>
+    <label for="lien_description">Description du lien :</label><br>
     <textarea name="lien_description" id="lien_description"></textarea>
 
-    <input type="submit" name="create"  value="AJOUTER">
+    <input type="submit" name="create"  value="AJOUTER"><br>
 
 </form>
 
 <form action="index.php" method="post">
-    <input type="submit" value="Revenir à la BDD" name="submit">
+    <input type="submit" value="Revenir à la BDD" name="submit"><br>
 </form>
 
 <?php

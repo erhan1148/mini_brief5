@@ -24,7 +24,6 @@
 </form>
     
 <?php
-
 // Connexion à la base de données
 try {
     $connexion = new PDO('mysql:host=localhost;dbname=brief5;charset=utf8', 'root', '');
@@ -34,19 +33,30 @@ try {
 }
 
 
+
 if(isset($_POST['delete'])) {
     // Récupérez les données du formulaire
     $lien_id = $_POST['lien_id'];
 
-    // Préparez la requête de suppression pour la table "lien"
-    $requeteDelete = "DELETE FROM lien WHERE lien_id = :lien_id";
-    $requetePrepareeDelete = $connexion->prepare($requeteDelete);
-    $requetePrepareeDelete->bindValue(':lien_id', $lien_id);
-    $requetePrepareeDelete->execute();
+    $requete = "DELETE lien, categorie, categorie_lien
+FROM lien
+LEFT JOIN categorie_lien ON lien.lien_id = categorie_lien.lien_id
+LEFT JOIN categorie ON categorie_lien.categorie_id = categorie.categorie_id
+WHERE lien.lien_id = :lien_id;";
+
+$requetePreparee = $connexion->prepare($requete);
+$requetePreparee->bindValue(':lien_id', $lien_id);
+$requetePreparee->execute();
+
 }
+
+    
+   
+
 
 
 ?>
+
 
 
 

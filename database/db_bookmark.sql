@@ -1,7 +1,7 @@
 CREATE DATABASE brief5
 
 CREATE TABLE `categorie` (
-    `categorie_id` int (100) PRIMARY KEY NOT NULL order by ,
+    `categorie_id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,,
     `categorie_nom` varchar(255) CHARACTER SET utf8 DEFAULT NULL
 )
 
@@ -38,13 +38,22 @@ INSERT INTO `lien` (`lien_id`, `lien_nom`,`lien_url`, `lien_description`) VALUES
 
 
 
+
 CREATE TABLE categorie_lien (
-    categorie_id INTEGER AUTO_INCREMENT,
-    lien_id INTEGER AUTO_INCREMENT  ,
+    categorie_id INTEGER,
+    lien_id INTEGER,
     PRIMARY KEY (categorie_id, lien_id),
-    FOREIGN KEY (categorie_id) REFERENCES categorie(categorie_id),
-    FOREIGN KEY (lien_id) REFERENCES lien(lien_id)
+    FOREIGN KEY (categorie_id) REFERENCES categorie(categorie_id) ON DELETE CASCADE,
+    FOREIGN KEY (lien_id) REFERENCES lien(lien_id) ON DELETE CASCADE
 );
+
+
+
+
+
+
+
+
 
 
  INSERT INTO `categorie_lien` (`categorie_id`, `lien_id`)

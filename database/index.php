@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type= "text/css" href="Styles/style.css">
-   
     
 
     <title>BDD</title>
@@ -16,12 +15,12 @@
 
 <table>
 <tr>
-    <th>CategorieID</th>
-    <th>Catégorie</th>
-    <th>NomID</th>
-    <th>Nom</th>
-    <th>Lien</th>
-    <th>Description</th>
+    <th>Catégories_ID</th>
+    <th>Catégories</th>
+    <th>Liens_ID</th>
+    <th>Liens</th>
+    <th>Liens_Url</th>
+    <th>Liens_Descriptions</th>
 </tr>
 
 
@@ -52,8 +51,6 @@ $requete = 'SELECT categorie.*, lien.* FROM categorie_lien
 JOIN categorie ON categorie_lien.categorie_id = categorie.categorie_id
 JOIN lien ON categorie_lien.lien_id = lien.lien_id';
 
-
-
 $requetePreparee = $connexion->prepare($requete);
 $requetePreparee->execute();
 $resultats = $requetePreparee->fetchAll();
@@ -70,8 +67,16 @@ foreach ($resultats as $ligne) {
     echo "</tr>";
 }
 
+            
+                                
 ?>
 
+                                
+</body>
+
+
+
 </table>
+
 </body>
 </html>
