@@ -11,7 +11,7 @@
 
 <form method="POST" action="updatecategorie.php">
     <div class="form-group">
-        <label for="categorie_id">Saisissez l'ID de la catégorie à Modifier:</label>
+        <label for="categorie_id">Saisissez l'ID de la catégorie à Modifier :</label>
         <input type="text" name="categorie_id" id="categorie_id" >
     </div>
     <div class="form-group">
