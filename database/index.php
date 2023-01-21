@@ -26,9 +26,15 @@
 <form action="create.php" method="post">
     <input type="submit" value="Ajouter" name="submit" class="cat1" >
 </form>
-<form action="update.php" method="post">
-    <input type="submit" value="Modifier"  name="submit" class="cat2">
+
+<form action="updatecategorie.php" method="post">
+    <input type="submit" value="Modifier Catégories"  name="submit" class="cat2">
 </form>
+
+<form action="updatelien.php" method="post">
+    <input type="submit" value="Modifier Liens"  name="submit" class="cat2">
+</form>
+
 <form action="delete.php" method="post">
     <input type="submit" value="Supprimer" name="submit" class="cat2">
 </form>
