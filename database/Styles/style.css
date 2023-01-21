@@ -1,9 +1,4 @@
 
-body{
-    background-image: url(im.jpg);
-    background-position: cover;
-    background-repeat: no-repeat;
-}
 
 table{
     border-collapse: collapse !important; 
@@ -13,6 +8,7 @@ th{
     border: 1px solid rebeccapurple !important;
     background-color: gray !important;
     font-size: 25px !important;
+
 }
 td{
     border: 1px solid rebeccapurple !important;
@@ -21,20 +17,84 @@ td{
 
 h1{
     text-align: center !important;
-    color: blue !important;
+    color: black!important;
     font-family: cursive !important;
-    font-size: 25px !important;
+    font-size: 35px !important;
 }
 
-input{
-    background-color: blue;
+
+.cat1{
+    background-color: blue!important;
     font-size: 25px;
-    margin: auto;
-    border-color: black;
+    text-align: center;
+    border-color: black !important;
+    color: white;
+    margin-bottom: 25px;
+    cursor: pointer;
+    
+
+}
+.cat2{
+    background-color: blue!important;
+    font-size: 25px;
+    border-color: black !important;
+    color: white;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    cursor: pointer;
+    text-align: center;
+}
+.cat3{
+    background-color: blue!important;
+    font-size: 25px;
+    border-color: black !important;
     color: white;
     margin-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
     margin: auto;
+    text-align: center;
+    cursor: pointer;
 }
 
+.form-group{
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input, textarea {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    background-color: gray !important;
+    width: auto;
+    color: white;
+    padding: 0.5rem 1rem;
+    width: 100%;
+
+  }
+  
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5rem;
+    cursor: pointer;
+   
+
+}
+  a {
+    text-decoration: none;
+    color: inherit;
+}
+.blue-button {
+    background-color: blue !important;
+}
+.green-button {
+    background-color: #4CAF50 !important;
+}

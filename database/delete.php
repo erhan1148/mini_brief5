@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type= "text/css" href="Styles/style.css">
     <title>Supprimer</title>
 </head>
 <body>
@@ -11,18 +12,21 @@
 
 <form method="POST" action="delete.php">
   
-
+    <div class="form-group">
     <label for="lien_id">ID du lien :</label>
-    <input type="text" name="lien_id" id="lien_id">
+    <input type="text" name="lien_id" id="lien_id" required="required" >
+    </div>
 
-    <input type="submit" name="delete" value="SUPPRIMER">
-
+    <div class="form-group">
+    <input class="blue-button"  type="submit" name="delete" value="SUPPRIMER">
+    </div>
 </form>
 
 <form action="index.php" method="post">
-    <input type="submit" value="Revenir à la BDD" name="submit">
+    <input class="green-button"  type="submit" value="Revenir à la BDD" name="submit">
 </form>
     
+
 <?php
 // Connexion à la base de données
 try {
@@ -32,31 +36,42 @@ try {
     die('Erreur : ' . $e->getMessage());
 }
 
-
-
 if(isset($_POST['delete'])) {
     // Récupérez les données du formulaire
     $lien_id = $_POST['lien_id'];
 
-    $requete = "DELETE lien, categorie, categorie_lien
-FROM lien
-LEFT JOIN categorie_lien ON lien.lien_id = categorie_lien.lien_id
-LEFT JOIN categorie ON categorie_lien.categorie_id = categorie.categorie_id
-WHERE lien.lien_id = :lien_id;";
+    // Récupérez les informations liées au lien à supprimer
+    $query = $connexion->prepare("SELECT categorie_id FROM categorie_lien WHERE lien_id = :lien_id");
+    $query->bindValue(':lien_id', $lien_id);
+    $query->execute();
+    $categories = $query->fetchAll();
 
-$requetePreparee = $connexion->prepare($requete);
-$requetePreparee->bindValue(':lien_id', $lien_id);
-$requetePreparee->execute();
-
-}
-
+    // Supprimez les informations de la table de liaison 'categorie_lien'
+    $query = $connexion->prepare("DELETE FROM categorie_lien WHERE lien_id = :lien_id");
+    $query->bindValue(':lien_id', $lien_id);
+    $query->execute();
     
-   
+    // Supprimez les catégories associées 
+    foreach($categories as $category) {
+        $query = $connexion->prepare("SELECT COUNT(*) FROM categorie_lien WHERE categorie_id = :categorie_id AND lien_id != :lien_id");
+        $query->bindValue(':categorie_id', $category['categorie_id']);
+        $query->bindValue(':lien_id', $lien_id);
+        $query->execute();
+        if($query->fetchColumn() == 0) {
+        $query = $connexion->prepare("DELETE FROM categorie WHERE categorie_id = :categorie_id");
+        $query->bindValue(':categorie_id', $category['categorie_id']);
+        $query->execute();    
 
+        }
+    }
 
+    // Supprimez les informations de la table 'lien'
+    $query = $connexion->prepare("DELETE FROM lien WHERE lien_id = :lien_id");
+    $query->bindValue(':lien_id', $lien_id);
+    $query->execute();
 
+    }
 ?>
-
 
 
 

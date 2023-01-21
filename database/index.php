@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type= "text/css" href="Styles/style.css">
-    
 
     <title>BDD</title>
 </head>
@@ -25,13 +24,13 @@
 
 
 <form action="create.php" method="post">
-    <input type="submit" value="Ajouter" name="submit" class="cat1">
+    <input type="submit" value="Ajouter" name="submit" class="cat1" >
 </form>
 <form action="update.php" method="post">
     <input type="submit" value="Modifier"  name="submit" class="cat2">
 </form>
 <form action="delete.php" method="post">
-    <input type="submit" value="Supprimer" name="submit" id="cat3">
+    <input type="submit" value="Supprimer" name="submit" class="cat2">
 </form>
 <?php
 
@@ -54,29 +53,42 @@ JOIN lien ON categorie_lien.lien_id = lien.lien_id';
 $requetePreparee = $connexion->prepare($requete);
 $requetePreparee->execute();
 $resultats = $requetePreparee->fetchAll();
-
-
-foreach ($resultats as $ligne) {
-    echo "<tr>";
-        echo "<td>".$ligne ['categorie_id']."</td>";
-        echo "<td>".$ligne ['categorie_nom']."</td>";
-        echo "<td>".$ligne ['lien_id']."</td>";
-        echo "<td>".$ligne ['lien_nom']."</td>";
-        echo "<td>".$ligne ['lien_url']. "</td>";
-        echo "<td>".$ligne ['lien_description']. "</td>";
-    echo "</tr>";
-}
-
-            
-                                
+if (!empty($resultats)) {
+    // Regrouper les données
+    function groupByCategory($resultats) {
+        $groupedData = array();
+        foreach ($resultats as $row) {
+            $groupedData[$row['categorie_id']]['categorie_id'] = $row['categorie_id'];
+            $groupedData[$row['categorie_id']]['categorie_nom'] = $row['categorie_nom'];
+            $groupedData[$row['categorie_id']]['lien'][] = array(
+            'lien_id' => $row['lien_id'],
+            'lien_nom' => $row['lien_nom'],
+            'lien_url' => $row['lien_url'],
+            'lien_description' => $row['lien_description']
+            );
+            }
+            return $groupedData;
+            }
+            $groupedData = groupByCategory($resultats);// Afficher les données regroupées
+            foreach ($groupedData as $group) {
+                    echo "<tr>";
+                    echo "<td rowspan='".count($group['lien'])."'>" . $group['categorie_id'] . "</td>";
+                    echo "<td rowspan='".count($group['lien'])."'>" . $group['categorie_nom'] . "</td>";
+                
+                    foreach ($group['lien'] as $key => $link) {
+                        if ($key != 0) {
+                            echo "<tr>";
+                        }
+                        echo "<td>" . $link['lien_id'] . "</td>";
+                        echo "<td>" . $link['lien_nom'] . "</td>";
+                        echo "<td><a href='" . $link['lien_url'] . "' target='_blank'>" . $link['lien_url'] . "</a></td>";
+                        echo "<td>" . $link['lien_description'] . "</td>";
+                        echo "</tr>";
+                    }
+                }
+                echo "</table>";}
 ?>
-
-                                
-</body>
-
-
-
-</table>
-
+                                             
+</table>                   
 </body>
 </html>

@@ -39,9 +39,9 @@ INSERT INTO `lien` (`lien_id`, `lien_nom`,`lien_url`, `lien_description`) VALUES
 
 
 
-CREATE TABLE categorie_lien (
-    categorie_id INTEGER,
-    lien_id INTEGER,
+CREATE TABLE 'categorie_lien' (
+    'categorie_id' INTEGER,
+    'lien_id' INTEGER,
     PRIMARY KEY (categorie_id, lien_id),
     FOREIGN KEY (categorie_id) REFERENCES categorie(categorie_id) ON DELETE CASCADE,
     FOREIGN KEY (lien_id) REFERENCES lien(lien_id) ON DELETE CASCADE

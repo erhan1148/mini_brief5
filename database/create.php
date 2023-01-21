@@ -7,29 +7,39 @@
     <link rel="stylesheet" type= "text/css" href="Styles/style.css">
 </head>
 <body>
-<form method="post" action="create.php">
 
+
+<form method="POST" action="create.php">
   
-    <label for="categorie_nom">Nom de la catégorie :</label><br>
-    <input type="text" name="categorie_nom" id="categorie_nom">
+    <div class="form-group">
+        <label for="categorie_nom">Nom de la catégorie :</label>
+        <input type="text" name="categorie_nom" id="categorie_nom" required="required" >
+    </div>
 
-
-    <label for="lien_nom">Nom du lien :</label><br>
-    <input type="text" name="lien_nom" id="lien_nom">
-
-    <label for="lien_url">URL du lien :</label><br>
-    <input type="text" name="lien_url" id="lien_url">
-
-    <label for="lien_description">Description du lien :</label><br>
-    <textarea name="lien_description" id="lien_description"></textarea>
-
-    <input type="submit" name="create"  value="AJOUTER"><br>
+    <div class="form-group">
+        <label for="lien_nom">Nom du lien :</label>
+        <input type="text" name="lien_nom" id="lien_nom" required="required" >
+    </div>
+    <div class="form-group">
+        <label for="lien_url">URL du lien :</label>
+        <input type="text" name="lien_url" id="lien_url" target="_blank" required="required" >
+    </div>
+    <div class="form-group">
+        <label for="lien_description">Description du lien :</label>
+        <textarea name="lien_description" id="lien_description" ></textarea>
+    </div>
+    <div class="form-group">
+    <input class="blue-button" type="submit"  name="create" value="AJOUTER" >
+</div>
 
 </form>
+
 
 <form action="index.php" method="post">
-    <input type="submit" value="Revenir à la BDD" name="submit"><br>
+    <input class="green-button" type="submit" value="Revenir à la BDD" name="submit"  >
 </form>
+
+
 
 <?php
 // Connexion à la base de données
